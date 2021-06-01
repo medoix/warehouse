@@ -1,0 +1,61 @@
+{{ define "return" }}
+{{ template "pageHead" }}
+<body>
+{{ template "pageMenu" }}
+<main class="container">
+
+  <div class="my-3 p-3 bg-body rounded shadow-sm">
+
+    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+
+    <form class="mdc-card card"
+        enctype="multipart/form-data" action="/update" method="post">
+        <div class="card-thumb">
+        <img src="/inventory/{{.Item.ID}}/picture.jpg" alt={{.Item.Name}} />
+        <div class="card-overlay">
+            <h1 class="mdc-typography mdc-typography--headline3
+            card-title">{{.Item.Name}}</h1>
+        </div>
+        </div>
+          <div class="card-content">
+            <div class="mdc-typography mdc-typography--body1">
+            <input type="hidden" id="id" name="id" value={{.Item.ID}} />
+            <input type="hidden" id="who" name="who" value="RETURN_CODE" />
+
+            <p>Please, take a picture of the place you are returning the item.</p>
+
+                <div style="text-align:center;">
+                    <img id="preview" alt="preview image"
+                            style="width:200px; height:200px; object-fit: cover;
+                            margin:auto; vertical-align:middle;"
+                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMU+g8AASkBE945rRMAAAAASUVORK5CYII="/>
+               </div><br>
+
+                <input type="file" accept="image/*" capture required id="image" name="image"
+                           onchange="document.getElementById('preview').src =
+                           window.URL.createObjectURL(this.files[0])">
+
+            </div>
+          </div>
+
+        <div class="mdc-card__actions">
+            <button class="mdc-button mdc-button--raised mdc-card__action
+                mdc-card__action--button mdc-theme -primary" type="submit">
+            <div class="mdc-button__ripple"></div>
+            <span class="mdc-button__label">Return!</span>
+            </button>
+        </div>
+
+    </form>
+
+    </div>
+  </div>
+</div>
+
+        </main>
+
+
+        {{ template "pageFoot" }}
+    </body>
+</html>
+{{ end }}

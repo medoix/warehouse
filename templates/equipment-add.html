@@ -1,0 +1,71 @@
+{{ define "equipment-add" }}
+{{ template "pageHead" }}
+<body>
+{{ template "pageMenu" }}
+<main class="container">
+
+  <div class="my-3 p-3 bg-body rounded shadow-sm">
+
+  <div class="mdc-layout-grid__inner">
+
+    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+
+    <form class="mdc-card card"
+        enctype="multipart/form-data" action="/equipment/add" method="post">
+
+          <div class="card-content">
+            <h2 class="mdc-typography mdc-typography--headline3
+            card-title">New Item</h2><br>
+            <div class="mdc-typography mdc-typography--body1">
+
+<label class="mdc-text-field mdc-text-field--outlined">
+  <input type="text" required class="mdc-text-field__input"
+  aria-labelledby="name" name="name">
+  <span class="mdc-notched-outline">
+    <span class="mdc-notched-outline__leading"></span>
+    <span class="mdc-notched-outline__notch">
+      <span class="mdc-floating-label" id="name">Name of the Item</span>
+    </span>
+    <span class="mdc-notched-outline__trailing"></span>
+  </span>
+</label>
+
+            <p>Please, take a picture of the item.</p>
+
+                <div style="text-align:center;">
+                    <img id="preview" alt="preview image"
+                            style="width:200px; height:200px; object-fit: cover;
+                            margin:auto; vertical-align:middle;"
+                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMU+g8AASkBE945rRMAAAAASUVORK5CYII="/>
+               </div><br>
+
+                <input type="file" accept="image/*" capture required id="image" name="image"
+                           onchange="document.getElementById('preview').src =
+                           window.URL.createObjectURL(this.files[0])">
+
+            </div>
+          </div>
+
+        <div class="mdc-card__actions">
+            <button class="mdc-button mdc-button--raised mdc-card__action
+                mdc-card__action--button mdc-theme -primary" type="submit">
+            <div class="mdc-button__ripple"></div>
+            <span class="mdc-button__label">Add</span>
+            </button>
+            <a class="mdc-button mdc-button--raised mdc-card__action
+                mdc-card__action--button mdc-theme -primary" href="/equipment">Cancel</a>
+        </div>
+
+    </form>
+
+    </div>
+  </div>
+</div>
+
+        </main>
+
+
+        {{ template "pageFoot" }}
+    </body>
+</html>
+{{ end }}

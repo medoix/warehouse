@@ -1,0 +1,75 @@
+{{ define "equipment" }}
+{{ template "pageHead" }}
+<body>
+{{ template "pageMenu" }}
+<main class="container">
+
+  <div class="my-3 p-3 bg-body rounded shadow-sm">
+    <div class="border-bottom row">
+      <div class="col-8">
+        <h2>Equipment</h2>
+      </div>
+      <div class="col-3">
+        <form>
+          <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+        </form>
+      </div>
+      <div class="col-1">
+        <a href="/equipment/add" class="btn btn-primary" tabindex="-1" role="button">Add</a>
+      </div>
+    </div>
+      <div class="d-flex text-muted pt-3">
+
+           <table class="table">
+            <thead>
+             <tr>
+               <th scope="col">Picture</th>
+               <th scope="col">Item</th>
+               <th scope="col">In Use?</th>
+               <th scope="col">At</th>
+               <th scope="col">Last Updated</th>
+             </tr>
+            </thead>
+            <tbody>
+                {{ range .Items }}
+                <tr>
+                  <td>
+                      <a href="/equipment/qr?id={{.ID}}" target="_blank">
+                          <div class="img-fluid">
+                            <img src="/equipment/{{.ID}}/picture.jpg" alt={{.Name}} width="40px" height="40px"/>
+                          </div>
+                      </a>
+                  </td>
+                  <td>
+                    <a href="/equipment/edit?id={{.ID}}">{{ .Name }}</a>
+                  </td>
+                  <td>
+                      {{if .InUse}}
+                          yes
+                      {{else}}
+                          no
+                      {{end}}
+                  </td>
+                  <td>
+                      {{if .InUse}}
+                          {{ .Location }}
+                      {{else}}
+                          <a href="/equipment/location?id={{.ID}}" target="_blank">{{ .Location }}</a>
+                      {{end}}
+                  </td>
+                  <td>
+                    {{ .Updated.Format "01/02 15:04" }}
+                  </td>
+              </tr>
+              {{ end }}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+{{ template "pageFoot" }}
+</body>
+
+</html>
+{{ end }}

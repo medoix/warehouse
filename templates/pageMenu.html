@@ -1,0 +1,40 @@
+{{ define "pageMenu" }}
+    <header>
+    <div class="px-3 py-2 bg-dark text-white">
+      <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+          <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+            <i class="bi-shop" style="font-size: 4rem;"></i>
+          </a>
+
+          <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+            <li>
+              <a href="/" class="nav-link text-white text-center">
+                <i class="bi-speedometer2 d-block mx-auto mb-1" style="font-size: 2rem;"></i>
+                Dashboard
+              </a>
+            </li>
+            <li>
+              <a href="/inventory" class="nav-link text-white text-center">
+                <i class="bi-grid d-block mx-auto mb-1" style="font-size: 2rem;"></i>
+                Inventory
+              </a>
+            </li>
+            <li>
+              <a href="/equipment" class="nav-link text-white text-center">
+                <i class="bi-tools d-block mx-auto mb-1" style="font-size: 2rem;"></i>
+                Equipment
+              </a>
+            </li>
+            <li>
+              <a href="#" class="nav-link text-white text-center">
+                <i class="bi-person-circle d-block mx-auto mb-1" style="font-size: 2rem;"></i>
+                Customers
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    </header>
+{{ end }}

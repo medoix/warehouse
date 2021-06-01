@@ -1,0 +1,59 @@
+{{ define "update" }}
+{{ template "pageHead" }}
+<body>
+{{ template "pageMenu" }}
+<main class="container">
+
+  <div class="my-3 p-3 bg-body rounded shadow-sm">
+
+    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+
+    <form class="mdc-card card"
+        enctype="multipart/form-data" action="/update" method="post">
+        <div style="background-color: rgba(1,1,1,0.12); width:100%;
+            height:100%; display:flex;"></div>
+        <div class="card-thumb">
+        <img src="/inventory/{{.Item.ID}}/picture.jpg" alt={{.Item.Name}} />
+        <div class="card-overlay">
+            <h1 class="mdc-typography mdc-typography--headline3
+            card-title">{{.Item.Name}}</h1>
+        </div>
+        </div>
+          <div class="card-content">
+            <div class="mdc-typography mdc-typography--body1">
+            <input type="hidden" id="id" name="id" value={{.Item.ID}} />
+
+<label class="mdc-text-field mdc-text-field--outlined">
+  <input type="text" required class="mdc-text-field__input"
+  aria-labelledby="who" name="who">
+  <span class="mdc-notched-outline">
+    <span class="mdc-notched-outline__leading"></span>
+    <span class="mdc-notched-outline__notch">
+      <span class="mdc-floating-label" id="who">Your Name</span>
+    </span>
+    <span class="mdc-notched-outline__trailing"></span>
+  </span>
+</label>
+            </div>
+          </div>
+
+        <div class="mdc-card__actions">
+            <button class="mdc-button mdc-button--raised mdc-card__action
+                mdc-card__action--button mdc-theme -primary" type="submit">
+            <div class="mdc-button__ripple"></div>
+            <span class="mdc-button__label">Use!</span>
+            </button>
+        </div>
+
+    </form>
+
+    </div>
+  </div>
+</div>
+
+        </main>
+
+        {{ template "pageFoot" }}
+    </body>
+</html>
+{{ end }}
