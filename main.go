@@ -209,7 +209,7 @@ func equipmentIndex(w http.ResponseWriter, r *http.Request) {
 
 // Inventory Functions
 func inventoryIndex(w http.ResponseWriter, r *http.Request) {
-	items, err := inventory.SortedItems(inventory.ByInUseDate, true)
+	items, err := inventory.SortedItems(inventory.ByPrice, true)
 	if err != nil {
 		log.Println("[ERR]", err)
 		return
@@ -232,8 +232,15 @@ func inventoryIndex(w http.ResponseWriter, r *http.Request) {
 func inventoryAdd(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
-		name := r.FormValue("name")
-		item, err := inventory.Add(name)
+		sku      := r.FormValue("sku")
+		name     := r.FormValue("name")
+		itemtype := r.FormValue("type")
+		value    := r.FormValue("value")
+		size     := r.FormValue("size")
+		quantity := r.FormValue("quantity")
+		price    := r.FormValue("price")
+		location := r.FormValue("location")
+		item, err := inventory.Add(sku, name, itemtype, value, size, quantity, price, location)
 		if err != nil {
 			log.Println("[ERR]", err)
 			return
@@ -254,7 +261,7 @@ func inventoryAdd(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/inventory", http.StatusSeeOther)
 
 	case "GET":
-		if err := templates.ExecuteTemplate(w, "add", nil); err != nil {
+		if err := templates.ExecuteTemplate(w, "inventory-add", nil); err != nil {
 			log.Println("[ERR]", err)
 			return
 		}
