@@ -7,4 +7,4 @@ FROM scratch
 EXPOSE 8080
 COPY --from=builder /app/warehouse .
 
-ENTRYPOINT ["./warehouse", "-d /data"]
+ENTRYPOINT ["./warehouse", "-d", "/data"]
