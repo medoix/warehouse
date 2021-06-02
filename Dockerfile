@@ -4,7 +4,7 @@ COPY . /app
 # Genereate pkger.go file with static content to embed
 RUN go get github.com/markbates/pkger/cmd/pkger && pkger
 # Build warehouse binary
-RUN GO_ENABLED=0 go build -o warehouse .
+RUN CGO_ENABLED=0 go build -o warehouse .
 
 FROM scratch
 EXPOSE 8080
