@@ -17,9 +17,9 @@ import (
 )
 
 const (
-	itemYAML   = "equipment.yaml"
-	itemPic    = "equipment.jpg"
-	itemLocPic = "equipment-location.jpg"
+	itemYAML   = "info.yaml"
+	itemPic    = "picture.jpg"
+	itemLocPic = "location.jpg"
 	retCODE    = "RETURN_CODE"
 )
 
