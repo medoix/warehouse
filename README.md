@@ -47,16 +47,10 @@ false` and the location of the item can be reviewed by clicking on the
 
 ### Security
 
-If only restricted users should have access to the warehouse, then create a
-`.htdigest` file or `.htpasswd` file and add users to the realm `warehouse`.
+Future improvement will be to support local users with authentication.
 
-Then, run inventory as:
-```
-$ warehouse -c /path/to/.htdigest
-```
-
-This will block the access to the inventory main page, but the QR scan can
-still be accessed by anyone.
+Note This will block the access to the warehouse main pages, but the QR scan can
+will still need to be accessed by anyone.
 
 ## Installation
 
