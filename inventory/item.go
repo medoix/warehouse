@@ -37,6 +37,16 @@ type Item struct {
 	Updated  time.Time `yaml:"update"`
 }
 
+// Delete deletes the item from the disk
+func (i *Item) Delete() error {
+	err := os.RemoveAll(i.path(""))
+	if err != nil {
+		return fmt.Errorf("inventory: could not delete item directory: %w", err)
+	}
+
+	return nil
+}
+
 // Update updates the information of the item on disk.
 func (i *Item) Update() error {
 	i.Updated = time.Now()

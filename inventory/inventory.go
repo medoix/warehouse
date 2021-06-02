@@ -159,6 +159,19 @@ func Update(id, sku, name, itemtype, value, size, quantity, price, location stri
 	return item, nil
 }
 
+// Delete deletes an item from the inventory.
+func Delete(id string) (error) {
+	item := &Item{
+		ID: id,
+	}
+
+	err := item.Delete()
+	if err != nil {
+		return fmt.Errorf("inventory: could not delete item: %w", err)
+	}
+	return err
+}
+
 func getDir() string {
 	if CustomPath != "" {
 		CustomPath += "/inventory"

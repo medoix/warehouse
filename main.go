@@ -66,6 +66,7 @@ func main() {
 	http.HandleFunc("/equipment", checkAuth(*credentials, equipmentIndex))
 
 	http.Handle("/inventory/", http.StripPrefix("/inventory/", http.FileServer(http.Dir(inventory.Path()))))
+	http.HandleFunc("/inventory/delete", checkAuth(*credentials, inventoryDelete))
 	http.HandleFunc("/inventory/edit", checkAuth(*credentials, inventoryEdit))
 	http.HandleFunc("/inventory/qr", checkAuth(*credentials, inventoryQr))
 	http.HandleFunc("/inventory/location", checkAuth(*credentials, inventoryLocation))
@@ -283,6 +284,21 @@ func inventoryQr(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "image/png")
 	io.Copy(w, bytes.NewReader(qr))
+}
+
+func inventoryDelete(w http.ResponseWriter, r *http.Request) {
+	id := r.FormValue("id")
+	if id == "" {
+		http.Redirect(w, r, "/inventory", http.StatusSeeOther)
+		return
+	}
+
+	err := inventory.Delete(id)
+	if err != nil {
+		log.Println("[ERR]", err)
+		return
+	}
+	http.Redirect(w, r, "/inventory", http.StatusSeeOther)
 }
 
 func inventoryLocation(w http.ResponseWriter, r *http.Request) {
