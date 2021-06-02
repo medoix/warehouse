@@ -14,7 +14,6 @@ import (
 	"strings"
 	"html/template"
 
-	auth "github.com/abbot/go-http-auth"
 	"github.com/medoix/warehouse/inventory"
 	"github.com/medoix/warehouse/equipment"
 	"github.com/markbates/pkger"
@@ -27,7 +26,6 @@ var templates *template.Template
 func main() {
 	port := flag.Int("p", 8080, "port to serve the inventory")
 	path := flag.String("d", defaultPath(), "path to warehouse directory")
-	credentials := flag.String("c", "", "filepath to credentials in realm [warehouse] (file name should end in either .htdigest or .htpasswd)")
 	flag.Parse()
 
 	if *path != defaultPath() {
@@ -54,7 +52,7 @@ func main() {
 	}
 
 	// Dashbaord routes
-	http.HandleFunc("/", checkAuth(*credentials, dashboardIndex))
+	http.HandleFunc("/", dashboardIndex)
 
 	// Equipment static content like images
 	http.Handle("/equipment/", http.StripPrefix("/equipment/", http.FileServer(http.Dir(inventory.Path()))))
@@ -62,16 +60,16 @@ func main() {
 	http.HandleFunc("/equipment/edit", equipmentEdit)
 	http.HandleFunc("/equipment/qr", equipmentQr)
 	http.HandleFunc("/equipment/location", equipmentLocation)
-	http.HandleFunc("/equipment/add", checkAuth(*credentials, equipmentAdd))
-	http.HandleFunc("/equipment", checkAuth(*credentials, equipmentIndex))
+	http.HandleFunc("/equipment/add", equipmentAdd)
+	http.HandleFunc("/equipment", equipmentIndex)
 
 	http.Handle("/inventory/", http.StripPrefix("/inventory/", http.FileServer(http.Dir(inventory.Path()))))
-	http.HandleFunc("/inventory/delete", checkAuth(*credentials, inventoryDelete))
-	http.HandleFunc("/inventory/edit", checkAuth(*credentials, inventoryEdit))
-	http.HandleFunc("/inventory/qr", checkAuth(*credentials, inventoryQr))
-	http.HandleFunc("/inventory/location", checkAuth(*credentials, inventoryLocation))
-	http.HandleFunc("/inventory/add", checkAuth(*credentials, inventoryAdd))
-	http.HandleFunc("/inventory", checkAuth(*credentials, inventoryIndex))
+	http.HandleFunc("/inventory/delete", inventoryDelete)
+	http.HandleFunc("/inventory/edit", inventoryEdit)
+	http.HandleFunc("/inventory/qr", inventoryQr)
+	http.HandleFunc("/inventory/location", inventoryLocation)
+	http.HandleFunc("/inventory/add", inventoryAdd)
+	http.HandleFunc("/inventory", inventoryIndex)
 
 	fmt.Printf("warehouse server started on port %d\n", *port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), nil))
@@ -115,20 +113,6 @@ func initTemplates(dir string) (*template.Template, error) {
 	})
 
 	return t, err
-}
-
-func checkAuth(path string, hf http.HandlerFunc) http.HandlerFunc {
-	switch filepath.Ext(path) {
-	case ".htdigest":
-		a := auth.NewDigestAuthenticator("warehouse", auth.HtdigestFileProvider(path))
-		return a.JustCheck(hf)
-
-	case ".htpasswd":
-		a := auth.NewBasicAuthenticator("warehouse", auth.HtpasswdFileProvider(path))
-		return auth.JustCheck(a, hf)
-	}
-
-	return hf
 }
 
 // Dashboard Functions
