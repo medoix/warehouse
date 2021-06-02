@@ -229,74 +229,6 @@ func inventoryIndex(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func inventoryEdit(w http.ResponseWriter, r *http.Request) {
-	id := r.FormValue("id")
-	if id == "" {
-		http.Redirect(w, r, "/inventory", http.StatusSeeOther)
-		return
-	}
-
-	items, err := inventory.Items()
-	if err != nil {
-		log.Println("[ERR]", err)
-		return
-	}
-
-	for _, item := range items {
-		if item.ID == id {
-			switch r.Method {
-			case "POST":
-				who := r.FormValue("who")
-				item.Use(who)
-				if item.InUse {
-					log.Println("[USE]", item)
-				} else {
-					img, _, err := r.FormFile("image")
-					if err != nil {
-						log.Println("[ERR]", err)
-						return
-					}
-					defer img.Close()
-
-					if err := item.SetLocationPicture(img); err != nil {
-						log.Println("[ERR]", err)
-						return
-					}
-					log.Println("[RET]", item)
-				}
-				http.Redirect(w, r, "/inventory", http.StatusSeeOther)
-
-			case "GET":
-				if item.InUse {
-					if err := templates.ExecuteTemplate(w, "return",
-						&struct {
-							Item *inventory.Item
-						}{
-							Item: item,
-						},
-					); err != nil {
-						log.Println("[ERR]", err)
-						return
-					}
-				} else {
-					if err := templates.ExecuteTemplate(w, "edit",
-						&struct {
-							Title string
-							Item *inventory.Item
-						}{
-							Title: item.Name,
-							Item: item,
-						},
-					); err != nil {
-						log.Println("[ERR]", err)
-						return
-					}
-				}
-			}
-		}
-	}
-}
-
 func inventoryAdd(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
@@ -368,6 +300,77 @@ func inventoryLocation(w http.ResponseWriter, r *http.Request) {
 			}
 			jpeg.Encode(w, img, nil)
 			break
+		}
+	}
+}
+
+func inventoryEdit(w http.ResponseWriter, r *http.Request) {
+	id       := r.FormValue("id")
+	sku      := r.FormValue("sku")
+	name     := r.FormValue("name")
+	itemtype := r.FormValue("type")
+	value    := r.FormValue("value")
+	size     := r.FormValue("size")
+	quantity := r.FormValue("quantity")
+	price    := r.FormValue("price")
+	location := r.FormValue("location")
+	filename := r.FormValue("filename")
+
+	if id == "" {
+		http.Redirect(w, r, "/inventory", http.StatusSeeOther)
+		return
+	}
+
+	items, err := inventory.Items()
+	if err != nil {
+		log.Println("[ERR]", err)
+		return
+	}
+
+	for _, item := range items {
+		if item.ID == id {
+			switch r.Method {
+			case "POST":
+				inventory.Update(
+					id,
+					sku,
+					name,
+					itemtype,
+					value,
+					size,
+					quantity,
+					price,
+					location,
+				)
+
+				if(filename != ""){
+					img, _, err := r.FormFile("image")
+					if err != nil {
+						log.Println("[ERR]", err)
+						return
+					}
+					defer img.Close()
+					if err := item.SetPicture(img); err != nil {
+						log.Println("[ERR]", err)
+						return
+					}
+				}
+				http.Redirect(w, r, "/inventory", http.StatusSeeOther)
+
+			case "GET":
+				if err := templates.ExecuteTemplate(w, "inventory-edit",
+					&struct {
+						Title string
+						Item  *inventory.Item
+					}{
+						Title: item.Name,
+						Item:  item,
+					},
+				); err != nil {
+					log.Println("[ERR]", err)
+					return
+				}
+			}
 		}
 	}
 }

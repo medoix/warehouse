@@ -104,10 +104,17 @@ func SortedItems(by sortBy, reversed bool) ([]*Item, error) {
 
 // Add adds a new named item to the inventory. It will auto-generate a unique
 // ID for the item based on the name.
-func Add(name string) (*Item, error) {
+func Add(sku, name, itemtype, value, size, quantity, price, location string) (*Item, error) {
 	item := &Item{
-		ID:   uniqueKey(name),
-		Name: name,
+		ID:       uniqueKey(name),
+		SKU:      sku,
+		Name:     name,
+		Type:     itemtype,
+		Value:    value,
+		Size:     size,
+		Quantity: quantity,
+		Price:    price,
+		Location: location,
 	}
 
 	img, err := base64.StdEncoding.DecodeString(imgDEFAULT)
@@ -126,7 +133,28 @@ func Add(name string) (*Item, error) {
 	if err != nil {
 		return nil, fmt.Errorf("inventory: could not add item: %w", err)
 	}
-	item.Use(retCODE)
+
+	return item, nil
+}
+
+// Update updates an item in the inventory by ID.
+func Update(id, sku, name, itemtype, value, size, quantity, price, location string) (*Item, error) {
+	item := &Item{
+		ID:       id,
+		SKU:      sku,
+		Name:     name,
+		Type:     itemtype,
+		Value:    value,
+		Size:     size,
+		Quantity: quantity,
+		Price:    price,
+		Location: location,
+	}
+
+	err := item.Update()
+	if err != nil {
+		return nil, fmt.Errorf("inventory: could not add item: %w", err)
+	}
 
 	return item, nil
 }

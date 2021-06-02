@@ -26,11 +26,15 @@ const (
 // Item is the item in the inventory.
 type Item struct {
 	ID       string    `yaml:"id"`
+	SKU      string    `yaml:"sku"`
 	Name     string    `yaml:"name"`
-	Price	 string    `yaml:"price"`
+	Type     string    `yaml:"itemtype"`
+	Value    string    `yaml:"value"`
+	Size     string    `yaml:"size"`
+	Quantity string    `yaml:"quantity"`
+	Price    string    `yaml:"price"`
 	Location string    `yaml:"location"`
 	Updated  time.Time `yaml:"update"`
-	InUse    bool      `yaml:"borrowred"`
 }
 
 // Update updates the information of the item on disk.
@@ -46,9 +50,7 @@ func (i *Item) Update() error {
 	if err != nil {
 		return fmt.Errorf("inventory: could not marshal yaml file: %w", err)
 	}
-
 	ioutil.WriteFile(i.path(itemYAML), data, 0644)
-
 	return nil
 }
 
@@ -93,21 +95,6 @@ func (i *Item) Picture() (image.Image, error) {
 // LocationPicture returns the picture of the location associated with the item.
 func (i *Item) LocationPicture() (image.Image, error) {
 	return getImg(i.path(itemLocPic))
-}
-
-// Use sets who is currently using the item and updates the information on
-// disk. If the return code `retCODE` is passed, the item is set as returned to
-// the `ReturnLocation`.
-func (i *Item) Use(who string) error {
-	if who == retCODE {
-		i.InUse = false
-		i.Location = ReturnLocation
-	} else {
-		i.InUse = true
-		i.Location = who
-	}
-
-	return i.Update()
 }
 
 // String implements the Stringer interface.
@@ -180,10 +167,6 @@ const (
 	ByDate
 	// ByPrice sorts items by price.
 	ByPrice
-	// ByInUse sorts items by use state.
-	ByInUse
-	// ByInUseDate sorts items by use state first and update date second.
-	ByInUseDate
 )
 
 // Sort sorts a slice of items by the speciafied element.
@@ -200,33 +183,6 @@ func Sort(element sortBy, items []*Item, reversed bool) {
 	case ByPrice:
 		by(func(i1, i2 *Item) bool {
 			return i1.Price < i2.Price
-		}).sorter(items, reversed)
-	case ByInUse:
-		by(func(i1, i2 *Item) bool {
-			a := 0
-			if i1.InUse {
-				a = 1
-			}
-			b := 0
-			if i2.InUse {
-				b = 1
-			}
-			return a < b
-		}).sorter(items, reversed)
-	case ByInUseDate:
-		by(func(i1, i2 *Item) bool {
-			a := 0
-			if i1.InUse {
-				a = 1
-			}
-			b := 0
-			if i2.InUse {
-				b = 1
-			}
-			if a == b {
-				return i1.Updated.Before(i2.Updated)
-			}
-			return a < b
 		}).sorter(items, reversed)
 	}
 }

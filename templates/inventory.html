@@ -24,10 +24,16 @@
             <thead>
              <tr>
                <th scope="col">Picture</th>
-               <th scope="col">Item</th>
-               <th scope="col">In Use?</th>
-               <th scope="col">At</th>
+               <th scope="col">SKU</th>
+               <th scope="col">Name</th>
+               <th scope="col">Type</th>
+               <th scope="col">Value</th>
+               <th scope="col">Size</th>
+               <th scope="col">Quantity</th>
+               <th scope="col">Price</th>
+               <th scope="col">Location</th>
                <th scope="col">Last Updated</th>
+               <th scope="col">Action</th>
              </tr>
             </thead>
             <tbody>
@@ -40,25 +46,18 @@
                           </div>
                       </a>
                   </td>
+                  <td>{{.SKU}}</td>
+                  <td><a href="/inventory/edit?id={{.ID}}">{{.Name}}</a></td>
+                  <td>{{.Type}}</td>
+                  <td>{{.Value}}</td>
+                  <td>{{.Size}}</td>
+                  <td>{{.Quantity}}</td>
+                  <td>{{.Price}}</td>
+                  <td><a href="/inventory/location?id={{.ID}}" target="_blank">{{.Location}}</a></td>
+                  <td>{{ .Updated.Format "02/01/06 15:04" }}</td>
                   <td>
-                    <a href="/inventory/edit?id={{.ID}}">{{ .Name }}</a>
-                  </td>
-                  <td>
-                      {{if .InUse}}
-                          yes
-                      {{else}}
-                          no
-                      {{end}}
-                  </td>
-                  <td>
-                      {{if .InUse}}
-                          {{ .Location }}
-                      {{else}}
-                          <a href="/inventory/location?id={{.ID}}" target="_blank">{{ .Location }}</a>
-                      {{end}}
-                  </td>
-                  <td>
-                    {{ .Updated.Format "01/02 15:04" }}
+                    <a href="/inventory/edit?id={{.ID}}" class="btn btn-success"><i class="bi bi-pen"></i></a>
+                    <a href="/inventory/delete?id={{.ID}}" class="btn btn-danger"><i class="bi bi-trash"></i></a>
                   </td>
               </tr>
               {{ end }}
