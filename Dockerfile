@@ -1,7 +1,10 @@
 FROM golang:alpine AS builder
 WORKDIR /app
 COPY . /app
-RUN CGO_ENABLED=0 go build -o warehouse .
+# Genereate pkger.go file with static content to embed
+RUN pkger
+# Build warehouse binary
+RUN GO_ENABLED=0 go build -o warehouse .
 
 FROM scratch
 EXPOSE 8080
