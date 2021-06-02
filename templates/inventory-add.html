@@ -1,71 +1,69 @@
-{{ define "add" }}
+{{ define "inventory-add" }}
 {{ template "pageHead" }}
 <body>
 {{ template "pageMenu" }}
 <main class="container">
 
   <div class="my-3 p-3 bg-body rounded shadow-sm">
+    <div class="border-bottom row">
+      <div class="col-8">
+        <h2>New Item</h2>
+      </div>
+    </div>
 
-  <div class="mdc-layout-grid__inner">
-
-    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-
-    <form class="mdc-card card"
-        enctype="multipart/form-data" action="/add" method="post">
-
-          <div class="card-content">
-            <h2 class="mdc-typography mdc-typography--headline3
-            card-title">New Item</h2><br>
-            <div class="mdc-typography mdc-typography--body1">
-
-<label class="mdc-text-field mdc-text-field--outlined">
-  <input type="text" required class="mdc-text-field__input"
-  aria-labelledby="name" name="name">
-  <span class="mdc-notched-outline">
-    <span class="mdc-notched-outline__leading"></span>
-    <span class="mdc-notched-outline__notch">
-      <span class="mdc-floating-label" id="name">Name of the Item</span>
-    </span>
-    <span class="mdc-notched-outline__trailing"></span>
-  </span>
-</label>
-
-            <p>Please, take a picture of the item.</p>
-
-                <div style="text-align:center;">
-                    <img id="preview" alt="preview image"
-                            style="width:200px; height:200px; object-fit: cover;
-                            margin:auto; vertical-align:middle;"
-                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMU+g8AASkBE945rRMAAAAASUVORK5CYII="/>
-               </div><br>
-
-                <input type="file" accept="image/*" capture required id="image" name="image"
-                           onchange="document.getElementById('preview').src =
-                           window.URL.createObjectURL(this.files[0])">
-
-            </div>
-          </div>
-
-        <div class="mdc-card__actions">
-            <button class="mdc-button mdc-button--raised mdc-card__action
-                mdc-card__action--button mdc-theme -primary" type="submit">
-            <div class="mdc-button__ripple"></div>
-            <span class="mdc-button__label">Add</span>
-            </button>
-            <a class="mdc-button mdc-button--raised mdc-card__action
-                mdc-card__action--button mdc-theme -primary" href="/">Cancel</a>
+    <div class="d-flex text-muted pt-3">
+      <form enctype="multipart/form-data" action="/inventory/add" method="post">
+        <div class="form-group">
+          <label for="name">SKU</label>
+          <input type="text" class="form-control" name="sku" placeholder="Item SKU">
         </div>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" name="name" placeholder="Item Name">
+        </div>
+        <div class="form-group">
+          <label for="name">Type</label>
+          <input type="text" class="form-control" name="type" placeholder="Item Type">
+        </div>
+        <div class="form-group">
+          <label for="name">Value</label>
+          <input type="text" class="form-control" name="value" placeholder="Item Value">
+        </div>
+        <div class="form-group">
+          <label for="name">Size</label>
+          <input type="text" class="form-control" name="size" placeholder="Item Size">
+        </div>
+        <div class="form-group">
+          <label for="name">Quantity</label>
+          <input type="text" class="form-control" name="quantity" placeholder="Item Quantity">
+        </div>
+        <div class="form-group">
+          <label for="name">Price</label>
+          <input type="text" class="form-control" name="price" placeholder="Item Price">
+        </div>
+        <div class="form-group">
+          <label for="name">Location</label>
+          <input type="text" class="form-control" name="location" placeholder="Item Location">
+        </div>
+        <div class="form-group">
+          <label for="picture">Picture</label>
+          <img id="preview" alt="preview image" class="form-control"
+            style="width:200px; height:200px; object-fit: cover;
+            margin:auto; vertical-align:middle;"
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMU+g8AASkBE945rRMAAAAASUVORK5CYII="/>
 
-    </form>
-
+          <input type="file" class="form-control" accept="image/*" capture required id="image" name="image"
+            onchange="document.getElementById('preview').src =
+            window.URL.createObjectURL(this.files[0])">
+        </div>
+        <button type="submit" class="btn btn-primary">Add</button>
+        <a href="/inventory" class="btn btn-secondary">Cancel</a>
+      </form>
     </div>
   </div>
-</div>
+</main>
 
-        </main>
-
-
-        {{ template "pageFoot" }}
-    </body>
+{{ template "pageFoot" }}
+</body>
 </html>
 {{ end }}
