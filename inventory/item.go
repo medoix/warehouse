@@ -107,11 +107,6 @@ func (i *Item) LocationPicture() (image.Image, error) {
 	return getImg(i.path(itemLocPic))
 }
 
-// String implements the Stringer interface.
-func (i *Item) String() string {
-	return fmt.Sprintf("{%s (%s) at %s, InUse: %v, Updated: %v}", i.ID, i.Name, i.Location, i.InUse, i.Updated)
-}
-
 func getImg(filepath string) (image.Image, error) {
 	file, err := os.Open(filepath)
 	if err != nil {
