@@ -2,7 +2,7 @@ FROM golang:alpine AS builder
 WORKDIR /app
 COPY . /app
 # Genereate pkger.go file with static content to embed
-RUN go mod tidy && pkger
+RUN go get github.com/markbates/pkger/cmd/pkger && pkger
 # Build warehouse binary
 RUN GO_ENABLED=0 go build -o warehouse .
 
